@@ -4,16 +4,16 @@ use crate::{Config, CONFIG_SEED};
 
 #[derive(Accounts)]
 pub struct Initialize<'info> {
+    #[account(mut)]
+    pub signer: Signer<'info>,
+
     #[account(
-        init, payer = payer,
+        init, payer = signer,
         space = Config::LEN,
         seeds = [CONFIG_SEED],
         bump
     )]
     pub config: Account<'info, Config>,
-
-    #[account(mut)]
-    pub payer: Signer<'info>,
 
     // System program
     pub system_program: Program<'info, System>,
