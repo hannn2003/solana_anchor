@@ -5,6 +5,9 @@ pub enum ErrorMessage {
     #[msg("End time must be greater than start time.")]
     InvalidTimePeriod,
 
+    #[msg("Start time must be greater than the current time.")]
+    InvalidStartTime,
+
     #[msg("Claim time must be between start time and end time.")]
     InvalidClaimTime,
 

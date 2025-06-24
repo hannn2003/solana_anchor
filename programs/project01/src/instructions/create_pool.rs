@@ -1,4 +1,5 @@
 use anchor_lang::prelude::*;
+use anchor_lang::solana_program::sysvar::clock;
 
 use crate::{Config, ErrorMessage, PoolAccount, CONFIG_SEED, POOL_SEED};
 
@@ -51,6 +52,12 @@ pub fn _create_pool(ctx: Context<CreatePool>,
     token: Pubkey,
     signer: Pubkey,
   ) -> Result<()>{
+
+    let clock = Clock::get()?;
+
+    let current_time = clock.unix_timestamp as u64;
+
+    require!(start_time >= current_time, ErrorMessage::InvalidStartTime);
     require!(end_time > start_time, ErrorMessage::InvalidTimePeriod);
     require!(token_for_sale > 0, ErrorMessage::InvalidTokenAmount);
     require!(token_rate > 0, ErrorMessage::InvalidTokenAmount);
